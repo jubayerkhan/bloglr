@@ -28,10 +28,15 @@
             @endisset
 
             <!-- Page Content -->
+            <!-- Page Content -->
+        <main>
+            @if (isset($slot))
+                {{ $slot }}
+            @else
+            @yield('content')
+            @endif
+        </main>
 
-            <main>
-                  @yield('content')
-            </main>
         </div>
     </body>
 </html>
