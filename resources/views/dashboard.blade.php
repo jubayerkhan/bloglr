@@ -17,16 +17,16 @@
                 </div>
 
                 {{-- ✅ These links will appear inside the white card --}}
-                <div class="mb-4 ml-4 flex gap-3">
+                <div class="mb-4 ml-6 flex gap-3">
                     <a
                         href="{{ route('posts.index') }}"
-                        class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-sm leading-normal"
+                        class="inline-block px-5 py-1.5 text-[#1b1b18] border border-[#19140035] hover:bg-gray-100 rounded-sm text-sm leading-normal"
                     >
                         Posts
                     </a>
                     <a
                         href="{{ route('blogs.index') }}"
-                        class="inline-block px-5 py-1.5 text-[#1b1b18] border border-transparent hover:border-[#19140035] rounded-sm text-sm leading-normal"
+                        class="inline-block px-5 py-1.5 text-[#1b1b18] border border-[#19140035] hover:bg-gray-100 rounded-sm text-sm leading-normal"
                     >
                         Blogs
                     </a>
