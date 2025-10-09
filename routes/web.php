@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,11 @@ Route::resource('posts', PostController::class);
 // blog controller routes
 Route::resource('blogs', BlogController::class)->except(['show', 'index'])->middleware('auth');
 Route::resource('blogs', BlogController::class)->only(['show', 'index']);
+// comments routes
+Route::middleware('auth')->group(function(){
+    Route::post('/blogs/{blog}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
