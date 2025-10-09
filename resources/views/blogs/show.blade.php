@@ -42,6 +42,5 @@
         @else
             <p class="mt-4 text-gray-500">Please <a href="{{ route('login') }}" class="text-blue-500">log in</a> to comment.</p>
         @endauth
-
     </div>
 @endsection
