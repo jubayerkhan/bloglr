@@ -10,10 +10,21 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::latest()->paginate(10);
-        return view('blogs.index', compact('blogs'));
+        $search = $request->input('search');
+
+        $blogs = Blog::with('user')
+        ->when($search, function ($query, $search) {
+            return $query->where('title', 'like', "%{$search}%")
+                ->orWhere("description", "like", "%{$search}%")
+                ->orWhere("user_id", "like", "%{$search}%")
+                ->orWhere("author", "like", "%{$search}%");
+        })
+        ->latest()
+        ->paginate(3)
+        ->withQueryString();
+        return view('blogs.index', compact('blogs', 'search'));
     }
 
     /**
@@ -35,7 +46,7 @@ class BlogController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
-        if($request->hasfile('image')){
+        if ($request->hasfile('image')) {
             $data['image'] = $request->file('image')->store('blogs', 'public');
         }
 
@@ -51,7 +62,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blogs.show' , compact('blog'));
+        return view('blogs.show', compact('blog'));
     }
 
     /**
@@ -77,7 +88,7 @@ class BlogController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
-        if($request->hasfile('image')){
+        if ($request->hasfile('image')) {
             $data['image'] = $request->file('image')->store('blogs', 'public');
         }
 

@@ -15,6 +15,13 @@ class Blog extends Model
     public function comments(){
         return $this->hasMany(Comment::class);
     }
+    public function scopeSearch($query, $term){
+        if($term){
+            $term = "%$term%";
+            $query->where('title', 'like', $term)
+                  ->orWhere('author', 'like', $term);
+        }
+    }
 }
 
 

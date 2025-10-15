@@ -1,8 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+  <form action="{{ route('blogs.index') }}" method="get" class="mb-5 max-w-6xl mx-auto pt-5">
+    <div class="flex items-center gap-2">
+      <input type="text" name="search" placeholder="search blog..." value="{{ request('search') }}"
+        class="border border-gray-300 rounded-lg px-4 py-2 w-full" />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        Search
+      </button>
+    </div>
+  </form>
   <div class="p-4 max-w-6xl mx-auto">
-    <h1 class="mb-2">Posts</h1>
+    <h1 class="mb-5 text-2xl">Blogs</h1>
     <a class="bg-blue-400 px-3 py-2" href="{{ route('blogs.create') }}">New Post</a>
   </div>
 
@@ -52,5 +61,7 @@
     </article>
   @endforeach
 
-  {{ $blogs->links() }}
+  <div class="pb-5 max-w-6xl mx-auto">
+    {{ $blogs->links() }}
+  </div>
 @endsection
