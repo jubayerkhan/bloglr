@@ -16,10 +16,18 @@ class BlogController extends Controller
 
         $blogs = Blog::with('user')
         ->when($search, function ($query, $search) {
-            return $query->where('title', 'like', "%{$search}%")
+             $query->where(function($q) use ($search){
+                $q->where('title', 'like', "%{$search}%")
                 ->orWhere("description", "like", "%{$search}%")
                 ->orWhere("user_id", "like", "%{$search}%")
-                ->orWhere("author", "like", "%{$search}%");
+                ->orWhere("author", "like", "%{$search}%")
+                ->orWhereHas('user', function($q2) use ($search){
+                    $q2->where('email', 'like', "%{$search}%");
+                })
+                ->orWhereHas('user', function($q2) use ($search){
+                    $q2->where('name', 'like', "%{$search}%");
+                });
+             });
         })
         ->latest()
         ->paginate(3)

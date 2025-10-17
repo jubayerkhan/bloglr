@@ -38,6 +38,11 @@
             @endif
         </main>
     </div>
+
+    {{-- Footer --}}
+    <footer class="mt-12 py-6 text-center text-gray-500 border-t">
+        &copy; {{ date('Y') }} MyBlog. All rights reserved.
+    </footer>
 </body>
 
 </html>
