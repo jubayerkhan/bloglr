@@ -11,7 +11,7 @@
     </div>
   </form>
   <div class="p-4 max-w-6xl mx-auto">
-    <h1 class="mb-5 text-2xl">Blogs</h1>
+    <h1 class="mb-5 text-2xl">Blogs All</h1>
     <a class="bg-blue-400 px-3 py-2" href="{{ route('blogs.create') }}">New Post</a>
   </div>
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'My Blog') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,7 +18,31 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+
+        {{-- Navigation --}}
+        <nav class="bg-white shadow-md mb-8">
+            <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+                <a href="{{ url('/') }}" class="text-2xl font-bold text-blue-600">MyBlog</a>
+
+                <div class="space-x-6">
+                    <a href="{{ route('blogs.index') }}" class="hover:text-blue-500">Home</a>
+
+                    @auth
+                        <a href="{{ route('blogs.create') }}" class="hover:text-blue-500">Create</a>
+                        <span class="text-gray-500">|</span>
+                        <span class="text-gray-700">Hi, {{ Auth::user()->name }}</span>
+
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="text-red-500 hover:text-red-600">Logout</button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="hover:text-blue-500">Login</a>
+                        <a href="{{ route('register') }}" class="hover:text-blue-500">Register</a>
+                    @endauth
+                </div>
+            </div>
+        </nav>
 
         <!-- Page Heading -->
         @isset($header)
