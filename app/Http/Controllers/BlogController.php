@@ -14,7 +14,7 @@ class BlogController extends Controller
     {
         $search = $request->input('search');
 
-        $blogs = Blog::with('user')
+        $blogs = Blog::with('user', 'likedByUsers')
         ->when($search, function ($query, $search) {
              $query->where(function($q) use ($search){
                 $q->where('title', 'like', "%{$search}%")

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BlogApiController extends Controller
 {
-    // Get all blogs (with search + pagination)
+    // Get all blogs with pagination + search
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -31,7 +31,7 @@ class BlogApiController extends Controller
         return response()->json($blog->load('user', 'comments'));
     }
 
-    // Create new blog (requires login)
+    // Create a new blog (requires login)
     public function store(Request $request)
     {
         $request->validate([
@@ -50,10 +50,9 @@ class BlogApiController extends Controller
         return response()->json($blog, 201);
     }
 
-    // Update blog
+    // Update a blog
     public function update(Request $request, Blog $blog)
     {
-        // Optional: Check ownership
         if (Auth::id() !== $blog->user_id && Auth::user()->usertype !== 'admin') {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
@@ -64,12 +63,12 @@ class BlogApiController extends Controller
             'description' => 'required|string',
         ]);
 
-        $blog->update($request->all());
+        $blog->update($request->only(['title', 'author', 'description']));
 
         return response()->json($blog);
     }
 
-    // Delete blog
+    // Delete a blog
     public function destroy(Blog $blog)
     {
         if (Auth::id() !== $blog->user_id && Auth::user()->usertype !== 'admin') {
@@ -78,6 +77,6 @@ class BlogApiController extends Controller
 
         $blog->delete();
 
-        return response()->json(['message' => 'Blog deleted']);
+        return response()->json(['message' => 'Blog deleted successfully']);
     }
 }
