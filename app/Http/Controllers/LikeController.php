@@ -9,7 +9,15 @@ class LikeController extends Controller
 {
     public function toggleLike(Blog $blog)
     {
-        $user = Auth::user();
+        // 🛑 Step 1: Check if the user is NOT logged in
+        if (!auth()->check()) {
+            return response()->json([
+                'error' => 'Please login first.'
+            ], 401); // 401 = Unauthenticated
+        }
+
+        // Step 2: Continue normally if logged in
+        $user = auth()->user();
 
         if ($user->likedBlogs()->where('blog_id', $blog->id)->exists()) {
             $user->likedBlogs()->detach($blog->id);
@@ -24,4 +32,5 @@ class LikeController extends Controller
             'likes_count' => $blog->likedByUsers()->count(),
         ]);
     }
+
 }

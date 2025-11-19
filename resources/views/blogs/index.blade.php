@@ -30,12 +30,18 @@
       <div class="flex items-center gap-3 my-2">
         <form action="{{ route('blogs.like', $blog->id) }}" method="POST" class="like-form" data-blog-id="{{ $blog->id }}">
           @csrf
-          <button type="submit" data-blog-id="{{ $blog->id }}" class="like-btn text-sm px-3 py-1 rounded transition
-              {{ auth()->check() && $blog->likedByUsers->contains(auth()->id())
-        ? 'bg-red-500 text-white'
-        : 'bg-gray-300 text-gray-700' }}">
-            ❤️ {{ $blog->likedByUsers->contains(auth()->id()) ? 'Unlike' : 'Like' }}
-          </button>
+          @if(!auth()->check())
+            <button class="like-btn bg-gray-300 text-gray-700 px-3 py-1 rounded">
+              🤍 Like
+            </button>
+          @else
+            <button type="submit" data-blog-id="{{ $blog->id }}" class="like-btn text-sm px-3 py-1 rounded transition
+                            {{ auth()->check() && $blog->likedByUsers->contains(auth()->id())
+            ? 'bg-red-500 text-white'
+            : 'bg-gray-300 text-gray-700' }}">
+              ❤️ {{ $blog->likedByUsers->contains(auth()->id()) ? 'Unlike' : 'Like' }}
+            </button>
+          @endif
         </form>
         <span class="text-gray-600 text-sm mb-3">
           <span id="likes-count-{{ $blog->id }}">{{ $blog->likedByUsers->count() }}</span> Likes
@@ -88,6 +94,7 @@
     document.querySelectorAll('.like-btn').forEach(button => {
       button.addEventListener('click', async (e) => {
         e.preventDefault();
+        e.stopImmediatePropagation();
 
         const blogId = button.dataset.blogId;
         const countEl = document.getElementById(`likes-count-${blogId}`);
@@ -101,9 +108,15 @@
             }
           });
 
+          // 🛑 If not logged in (401)
+          if (response.status === 401) {
+            alert("Please login first!");
+            return;
+          }
+
           const data = await response.json();
 
-          // Update button text & color
+          // Update button
           if (data.status === 'liked') {
             button.textContent = `❤️ Unlike (${data.likes_count})`;
             button.classList.remove('bg-gray-300', 'text-gray-700');
@@ -114,7 +127,7 @@
             button.classList.add('bg-gray-300', 'text-gray-700');
           }
 
-          // ✅ Update the likes count in the span
+          // Update count
           if (countEl) {
             countEl.textContent = data.likes_count;
           }

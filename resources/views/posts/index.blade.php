@@ -9,6 +9,9 @@
   @foreach($posts as $post)
     <article class="p-4 max-w-6xl mx-auto">
       <h2><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h2>
+      @if($post->author)
+        <h3>By: {{ $post->author }}</h3>
+      @endif
       <p>{{ \Illuminate\Support\Str::limit($post->body, 120) }}</p>
       <p class="mb-2">Created at: {{ $post->created_at->format('Y-m-d H:i') }}</p>
       <!-- <p> updated at: {{$post->updated_at}}</p> -->
