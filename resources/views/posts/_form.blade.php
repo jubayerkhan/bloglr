@@ -1,21 +1,35 @@
 @csrf
 
 <div>
-  <label>Title</label>
-  <input type="text" name="title" value="{{ old('title', $post->title ?? '') }}">
-  @error('title') <div>{{ $message }}</div> @enderror
+    {{ html()->label('Title', 'title') }}
+
+    {{ html()->text('title')->class('border p-2 w-full') }}
+
+    @error('title')
+        <div class="text-red-500">{{ $message }}</div>
+    @enderror
 </div>
 
-<div>
-  <label>Author</label>
-  <input type="text" name="author" value="{{ old('author', $post->author?? '') }}">
-  @error('author') <div>{{ $message }}</div> @enderror
+<div class="mt-4">
+    {{ html()->label('Author', 'author') }}
+
+    {{ html()->text('author')->class('border p-2 w-full') }}
+
+    @error('author')
+        <div class="text-red-500">{{ $message }}</div>
+    @enderror
 </div>
 
-<div>
-  <label>Body</label>
-  <textarea name="body">{{ old('body', $post->body ?? '') }}</textarea>
-  @error('body') <div>{{ $message }}</div> @enderror
+<div class="mt-4">
+    {{ html()->label('Body', 'body') }}
+
+    {{ html()->textarea('body')->value(old('body', $post->body ?? ''))->class('border p-2 w-full') }}
+
+    @error('body')
+        <div class="text-red-500">{{ $message }}</div>
+    @enderror
 </div>
 
-<button class="bg-blue-400 px-3 py-1" type="submit">{{ $buttonText ?? 'Save' }}</button>
+{{ 
+    html()->submit($buttonText ?? 'Save')->class('bg-blue-400 text-white px-3 py-1 mt-4 inline-block') 
+}}
